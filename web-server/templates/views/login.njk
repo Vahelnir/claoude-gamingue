@@ -1,0 +1,55 @@
+{% extends "layouts/main.njk" %}
+
+{% block page_title %}Connexion{% endblock %}
+{% block page_content %}
+<div class="row">
+  <div class="col-lg-4"></div>
+  <div class="col-lg-4">
+    <div class="container mt-5 text-white">
+      <form action="/login" method="post">
+        <div class="form-container">
+          <h2>Connexion</h2>
+          <div class="mb-3 mt-3">
+            {% if errors %}
+              <div class="alert alert-danger" role="alert">
+                <ul>
+                  {% for error in errors %}
+                    <li>{{ error }}</li>
+                  {% endfor %}
+                </ul>
+              </div>
+            {% endif %}
+            <label for="email">Email:</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              placeholder="Entrez votre email"
+              name="email"
+              value="{{ email }}"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="password">Mot de passe</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              placeholder="Entrez votre mot de passe"
+              name="password"
+            />
+          </div>
+          <div class="alert text-center text-white">
+            Pas encore de compte ?<a href="/register" class="alert-link">
+              Inscrivez-vous !</a
+            >.
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-danger">Se connecter</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

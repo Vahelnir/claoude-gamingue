@@ -1,0 +1,27 @@
+{% extends "layouts/main.njk" %}
+
+{% block page_title %}Home{% endblock %}
+
+{% block page_content %}
+  {% include "partials/navigation-bar.njk" %}
+  <div class="container-fluid mt-5">
+    <div class="row">
+      {% for game in games %}
+      <div class="col-lg-3">
+        <div class="card mx-auto" style="width: 400px">
+          <img
+            class="card-img-top"
+            src="{{ game.image }}"
+            alt="Card image"
+          />
+          <div class="card-body">
+            <h4 class="card-title">{{ game.name }}</h4>
+            <p class="card-text">{{ game.description }}</p>
+            <a href="#" class="btn btn-primary">Jouer</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

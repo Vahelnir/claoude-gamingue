@@ -1,0 +1,22 @@
+.bg-image{
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url("/img/pexels-lucie-liz-3165335.jpg") ;
+
+}
+.bg-image2{
+    background-size: cover;
+    /*background-position: center;*/
+    background-repeat: no-repeat;
+    background-image: url("/img/pexels-lucie-liz-3165335.jpg") ;
+
+}
+.form-container{
+    /*max-width: 400px;*/
+    align-items: center;
+    border: 0px solid #fff; padding: 50px 40px; margin-top: 20vh;
+    -webkit-box-shadow: -2px 3px 22px 10px rgba(0,0,0,0.75);
+    -moz-box-shadow: -2px 3px 22px 10px rgba(0,0,0,0.75);
+    box-shadow: -2px 3px 22px 10px rgba(0,0,0,0.75);
+}

@@ -1,0 +1,3 @@
+workspaces:
+  - 'claoude-vm/'
+  - 'web-server/'
