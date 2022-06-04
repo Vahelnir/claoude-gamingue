@@ -7,14 +7,17 @@ import fastifySession from "@fastify/secure-session";
 import fastifyStatic from "@fastify/static";
 import fastifyMultipart from "@fastify/multipart";
 import fastifyFormbody from "@fastify/formbody";
+import fastifyWebsocket from "@fastify/websocket";
+import { hash, verify } from "argon2";
+import { Container } from "typedi";
 
 import { readFileSync } from "fs";
 import { dirname, join, resolve } from "path";
 
 import config from "./mikro-orm.config";
 import { User } from "./entity/User";
-import { hash, verify } from "argon2";
-import { inspect } from "util";
+import { websocket_plugin } from "./websocket";
+import { games as all_games, games } from "./games";
 
 // Run the server!
 async function initialize_web_server() {
@@ -23,10 +26,13 @@ async function initialize_web_server() {
     await orm.connect();
   }
 
+  Container.set(EntityManager, orm.em);
+
   const fastify = Fastify({
     logger: false,
   });
 
+  fastify.register(fastifyWebsocket);
   fastify.register(fastifyFormbody);
   fastify.register(fastifyMultipart);
 
@@ -63,6 +69,8 @@ async function initialize_web_server() {
     request.logged_user = logged_user;
   });
 
+  fastify.register(websocket_plugin);
+
   async function require_connected(
     request: FastifyRequest,
     reply: FastifyReply
@@ -87,18 +95,6 @@ async function initialize_web_server() {
     return reply.redirect("/home");
   });
 
-  const all_games = [
-    {
-      image: "/img/trafficRacerGameUnity.png",
-      name: "Traffic Racer",
-      description: "Une description vide",
-    },
-    {
-      image: "/img/TappyBallGame-Unityengine.png",
-      name: "TappyBall",
-      description: "Une description vide",
-    },
-  ];
   fastify.get("/home", async function (request, reply) {
     await require_connected(request, reply);
     const logged_user = request.logged_user;
@@ -106,6 +102,23 @@ async function initialize_web_server() {
     const games = is_subscribed ? all_games : [];
     return reply.view("views/home.njk", { games });
   });
+
+  fastify.get<{ Params: { id: string } }>(
+    "/game/:id",
+    async function (request, reply) {
+      await require_connected(request, reply);
+      const logged_user = request.logged_user;
+      const is_subscribed = logged_user?.subscribed ?? false;
+
+      const game = games.find((game) => game.id === +request.params.id);
+      if (!game) {
+        reply.status(404).send("Page not found");
+        return;
+      }
+
+      return reply.view("views/game.njk", { game_id: game.id });
+    }
+  );
 
   fastify.get("/login", async function (request, reply) {
     await require_disconnected(request, reply);

@@ -1,9 +1,6 @@
 import "dotenv/config";
 import * as util from "util";
-import {
-  ClientSecretCredential,
-  DefaultAzureCredential,
-} from "@azure/identity";
+import { ClientSecretCredential } from "@azure/identity";
 import {
   ComputeManagementClient,
   VirtualMachine,
@@ -16,20 +13,14 @@ import {
   NetworkManagementClient,
   PublicIPAddress,
   Subnet,
+  VirtualNetwork,
 } from "@azure/arm-network";
 
 // Store function output to be used elsewhere
-let randomIds = {};
-let subnetInfo = null;
-let publicIPInfo = null;
+let subnet_info = null;
+let public_ip_info = null;
 let vmImageInfo = null;
-let nicInfo = null;
-
-// CHANGE THIS - used as prefix for naming resources
-const your_alias = "claoude";
-
-// CHANGE THIS - used to add tags to resources
-const project_name = "azure-samples-create-vm";
+let nic_info = null;
 
 // Resource configs
 const location = "eastus";
@@ -41,6 +32,9 @@ const offer = "0001-com-ubuntu-server-focal";
 const sku = "20_04-lts-gen2";
 const admin_username = "notadmin";
 const admin_password = "Pa$$w0rd92";
+
+// Claoude VM Snapshot
+const snapshot_version = "0.0.8";
 
 // Azure authentication in environment variables for DefaultAzureCredential
 const tenantId = process.env["AZURE_TENANT_ID"];
@@ -56,7 +50,7 @@ if (!tenantId || !clientId || !secret || !subscriptionId) {
 
 const credentials = new ClientSecretCredential(tenantId, clientId, secret);
 // Azure services
-const resourceClient = new ResourceManagementClient(
+const resource_client = new ResourceManagementClient(
   credentials,
   subscriptionId
 );
@@ -68,11 +62,16 @@ function get_name_factory(id: string) {
   return (type: string) => `claoude${type}${id}`;
 }
 
+export type CreatedVM = {
+  public_ip: PublicIPAddress;
+  name: string;
+  vm_info: VirtualMachine;
+};
+
 // Create resources then manage them (on/off)
-export async function create_resources(id: string, user_id: string) {
+export function get_names(id: string) {
   const get_name = get_name_factory(id);
-  const tags = { user_id };
-  const names = {
+  return {
     resource_group: get_name("group"),
     storage_group: get_name("ac"),
     vnet: get_name("vnet"),
@@ -84,7 +83,14 @@ export async function create_resources(id: string, user_id: string) {
     vm: get_name("vm"),
     disk: get_name("disk"),
   };
+}
 
+export async function create_resources(
+  id: string,
+  user_id: string
+): Promise<CreatedVM | undefined> {
+  const names = get_names(id);
+  const tags = { user_id };
   try {
     await create_resource_group(names.resource_group, tags);
     await create_storage_account(
@@ -93,38 +99,43 @@ export async function create_resources(id: string, user_id: string) {
       tags
     );
     await create_vnet(names.resource_group, names.vnet, names.subnet, tags);
-    subnetInfo = await get_subnet_info(
+    subnet_info = await get_subnet_info(
       names.resource_group,
       names.vnet,
       names.subnet
     );
-    publicIPInfo = await create_public_ip(
+    public_ip_info = await create_public_ip(
       names.resource_group,
       names.public_ip,
       names.domain,
       tags
     );
-    nicInfo = await create_nic(
+    nic_info = await create_nic(
       names.resource_group,
       names.network_interface,
       names.public_ip_config,
-      subnetInfo,
-      publicIPInfo,
+      subnet_info,
+      public_ip_info,
       tags
     );
 
-    if (!nicInfo?.id) throw new Error("no nic id found");
+    if (!nic_info?.id) throw new Error("no nic id found");
     vmImageInfo = await find_vm_image();
     await get_nic_info(names.resource_group, names.network_interface);
-    await create_virtual_machine(
+    const vm_info = await create_virtual_machine(
       names.resource_group,
       names.vm,
       names.disk,
-      nicInfo.id,
+      nic_info.id,
       vmImageInfo[0].name,
       tags
     );
-    return;
+    public_ip_info = await network_client.publicIPAddresses.get(
+      names.resource_group,
+      names.public_ip
+    );
+
+    return { public_ip: public_ip_info, vm_info, name: names.resource_group };
   } catch (err) {
     console.log(err);
   }
@@ -140,7 +151,7 @@ async function create_resource_group(
     tags,
   };
   const created_resource_group =
-    await resourceClient.resourceGroups.createOrUpdate(
+    await resource_client.resourceGroups.createOrUpdate(
       resource_group_name,
       group_parameters
     );
@@ -175,13 +186,10 @@ async function create_vnet(
   tags: Record<string, string>
 ) {
   console.log("\n3.Creating vnet: " + vnet_name);
-  const vnet_parameters = {
+  const vnet_parameters: VirtualNetwork = {
     location: location,
     addressSpace: {
       addressPrefixes: ["10.0.0.0/16"],
-    },
-    dhcpOptions: {
-      dnsServers: ["10.1.1.1", "10.1.2.4"],
     },
     subnets: [{ name: subnet_name, addressPrefix: "10.0.0.0/24" }],
     tags,
@@ -318,10 +326,13 @@ async function create_virtual_machine(
     },
     storageProfile: {
       imageReference: {
-        publisher: publisher,
-        offer: offer,
-        sku: sku,
-        version: vm_image_version_number,
+        // publisher: publisher,
+        // offer: offer,
+        // sku: sku,
+        // version: vm_image_version_number,
+        id:
+          "/subscriptions/26f39b88-f83b-4a5f-9517-ab9b1b589754/resourceGroups/base_claoude_gamingue/providers/Microsoft.Compute/galleries/galerie_claoude/images/claoude-image/versions/" +
+          snapshot_version,
       },
       osDisk: {
         name: os_disk_name,
@@ -340,9 +351,6 @@ async function create_virtual_machine(
     tags,
   };
   console.log("6.Creating Virtual Machine: " + vm_name);
-  console.log(
-    " VM create parameters: " + util.inspect(vmParameters, { depth: null })
-  );
   await compute_client.virtualMachines.beginCreateOrUpdateAndWait(
     resource_group_name,
     vm_name,
@@ -353,5 +361,19 @@ async function create_virtual_machine(
 
 export async function delete_resources(id: string) {
   const get_name = get_name_factory(id);
-  await resourceClient.resourceGroups.beginDelete(get_name("group"));
+  await resource_client.resourceGroups.beginDelete(get_name("group"));
+}
+
+export async function delete_resources_and_wait(id: string) {
+  const get_name = get_name_factory(id);
+  await resource_client.resourceGroups.beginDeleteAndWait(get_name("group"));
+}
+
+export async function get_resource_group_ip(resource_group_name: string) {
+  const resource_group = resource_client.resources.listByResourceGroup(
+    resource_group_name,
+    { filter: "resourceType eq 'Microsoft.Network/publicIPAddresses'" }
+  );
+
+  // TODO: get the ip address
 }
