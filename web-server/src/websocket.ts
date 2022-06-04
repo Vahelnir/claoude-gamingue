@@ -8,6 +8,9 @@ import { Client } from "./websocket/client";
 type ConnectedUser = { last_message_time: number; client: Client | null };
 const connected_users = new Map<string, ConnectedUser>();
 
+// 5 minutes
+const MAX_IDLE_TIME = 60_000 * 5
+
 export const websocket_plugin: FastifyPluginAsync = async function (fastify) {
   const entity_manager =
     Container.get<EntityManager<IDatabaseDriver<Connection>>>(
@@ -80,7 +83,7 @@ function start_loop(entity_manager: EntityManager) {
     delete_unused_vms();
 
     await save_vm_cache(entity_manager);
-  }, 60_000);
+  }, MAX_IDLE_TIME);
 }
 
 function delete_unused_vms() {
