@@ -110,6 +110,10 @@ async function initialize_web_server() {
       await require_connected(request, reply);
       const logged_user = request.logged_user;
       const is_subscribed = logged_user?.subscribed ?? false;
+      if (!is_subscribed) {
+        reply.redirect("/home");
+        return;
+      }
 
       const game = games.find((game) => game.id === +request.params.id);
       if (!game) {
