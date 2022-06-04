@@ -30,6 +30,15 @@ export const websocket_plugin: FastifyPluginAsync = async function (fastify) {
       return;
     }
 
+    if (!logged_user.subscribed) {
+      connection.socket.send(
+        JSON.stringify({ type: "error", data: { error: "not subscribed" } })
+      );
+      connection.socket.close();
+      console.log("client not subscribed");
+      return;
+    }
+
     const previously_connected_user = connected_users.get(logged_user.id);
     if (previously_connected_user?.client) {
       console.log("client already connected");
