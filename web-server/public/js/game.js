@@ -16,9 +16,7 @@ websocket.addEventListener("message", (message_event) => {
   } else if (message.name === "game:started") {
     stop_loading();
     setTimeout(() => {
-      const iframe = document.createElement("iframe");
-      iframe.src = message.data.url;
-      game_mount.appendChild(iframe);
+      game_mount.src = message.data.url;
     }, 1000);
   } else if (message.name === "game:starting") {
     start_loading();
