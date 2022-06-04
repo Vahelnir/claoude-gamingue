@@ -1,1 +1,7 @@
-export { create_resources, delete_resources, get_names } from "./create-vm";
+export {
+  create_resources,
+  delete_resources,
+  delete_resources_and_wait,
+  get_names,
+  CreatedVM
+} from "./create-vm";

@@ -9,8 +9,8 @@
   <style>
   .game_wrapper {
     position: relative;
-    width: 800px;
-    height: 600px;
+    width: 1000px;
+    height: 700px;
     background: white;
     margin: 0 auto;
     margin-top: 3em;
@@ -124,5 +124,27 @@
     </div>
     <div id="game_mount"></div>
   </div>
+
+  <div
+    class="modal fade"
+    id="error_modal"
+    tabindex="-1"
+    aria-labelledby="error_modal"
+    aria-hidden="true"
+    data-bs-backdrop="static"
+    data-bs-keyboard="false"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="error_modal_title">
+            Une erreur est survenue
+          </h5>
+        </div>
+        <div class="modal-body" id="error_modal_message"></div>
+      </div>
+    </div>
+  </div>
+
   <script src="/js/game.js"></script>
 {% endblock %}

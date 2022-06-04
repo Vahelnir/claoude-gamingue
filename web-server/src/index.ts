@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import "dotenv/config";
 import Fastify, { FastifyReply, FastifyRequest } from "fastify";
 import PointOfView from "point-of-view";
 import nunjucks from "nunjucks";

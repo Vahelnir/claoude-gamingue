@@ -11,11 +11,15 @@ websocket.addEventListener("message", (message_event) => {
 
   if (message.name === "error") {
     // TODO: handle error
+    const error_message = message.data.error;
+    display_error_modal(error_message);
   } else if (message.name === "game:started") {
     stop_loading();
-    const iframe = document.createElement("iframe");
-    iframe.src = message.data.url;
-    game_mount.appendChild(iframe);
+    setTimeout(() => {
+      const iframe = document.createElement("iframe");
+      iframe.src = message.data.url;
+      game_mount.appendChild(iframe);
+    }, 1000);
   } else if (message.name === "game:starting") {
     start_loading();
   }
@@ -74,4 +78,12 @@ function start_loading() {
 
 function stop_loading() {
   loader_wrapper.classList.remove("loader_wrapper--visible");
+}
+
+const error_modal_element = document.getElementById("error_modal");
+const error_modal = new bootstrap.Modal(error_modal_element);
+const error_modal_message = document.getElementById("error_modal_message");
+function display_error_modal(message) {
+  error_modal_message.innerText = message;
+  error_modal.show();
 }

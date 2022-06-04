@@ -1,4 +1,3 @@
-import "dotenv/config";
 import * as util from "util";
 import { ClientSecretCredential } from "@azure/identity";
 import {

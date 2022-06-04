@@ -2,10 +2,9 @@
   "compilerOptions": {
     "module": "commonjs",
     "moduleResolution": "node",
-    "target": "esnext",
+    "target": "es2021",
     "strict": true,
     "outDir": "./build",
-    "declaration": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,

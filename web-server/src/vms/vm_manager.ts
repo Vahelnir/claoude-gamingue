@@ -1,5 +1,9 @@
-import { create_resources, delete_resources } from "claoude-vm";
-import { CreatedVM, delete_resources_and_wait } from "claoude-vm/src/create-vm";
+import {
+  create_resources,
+  delete_resources,
+  delete_resources_and_wait,
+  CreatedVM,
+} from "claoude-vm";
 import EventEmitter from "events";
 
 // TODO: probably changing in the future
