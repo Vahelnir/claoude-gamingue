@@ -34,7 +34,7 @@ importers:
       '@mikro-orm/cli': ^5.1.3
       '@mikro-orm/core': ^5.1.3
       '@mikro-orm/mariadb': ^5.1.3
-      '@mikro-orm/mysql': ^5.1.5
+      '@mikro-orm/mysql': 5.1.3
       '@types/node': ^17.0.33
       '@types/nunjucks': ^3.2.1
       '@types/uuid': ^8.3.4
@@ -58,9 +58,9 @@ importers:
       '@fastify/secure-session': 4.1.1
       '@fastify/static': 5.0.2
       '@fastify/websocket': 5.0.0
-      '@mikro-orm/core': 5.1.3_frfpq6wv32dnfqqfu23dt43aje
+      '@mikro-orm/core': 5.1.3_wlfhgmpaqqf4zyiwnvbzawf5dm
       '@mikro-orm/mariadb': 5.1.3_@mikro-orm+core@5.1.3
-      '@mikro-orm/mysql': 5.1.5_@mikro-orm+core@5.1.3
+      '@mikro-orm/mysql': 5.1.3_@mikro-orm+core@5.1.3
       argon2: 0.28.5
       claoude-vm: link:../claoude-vm
       ejs: 3.1.8
@@ -72,7 +72,7 @@ importers:
       typedi: 0.10.0
       uuid: 8.3.2
     devDependencies:
-      '@mikro-orm/cli': 5.1.3_frfpq6wv32dnfqqfu23dt43aje
+      '@mikro-orm/cli': 5.1.3_wlfhgmpaqqf4zyiwnvbzawf5dm
       '@types/node': 17.0.33
       '@types/nunjucks': 3.2.1
       '@types/uuid': 8.3.4
@@ -403,7 +403,7 @@ packages:
       - supports-color
     dev: false
 
-  /@mikro-orm/cli/5.1.3_frfpq6wv32dnfqqfu23dt43aje:
+  /@mikro-orm/cli/5.1.3_wlfhgmpaqqf4zyiwnvbzawf5dm:
     resolution: {integrity: sha512-GNAVg0hjdQrvkEvzIdec3LafocLHSZkojA+699LMoSgH9YrtOQnk/luBssdJSTJgHngb2twWlM6KCLjFSzIV5Q==}
     engines: {node: '>= 14.0.0'}
     hasBin: true
@@ -437,10 +437,10 @@ packages:
       '@mikro-orm/sqlite':
         optional: true
     dependencies:
-      '@mikro-orm/core': 5.1.3_frfpq6wv32dnfqqfu23dt43aje
+      '@mikro-orm/core': 5.1.3_wlfhgmpaqqf4zyiwnvbzawf5dm
       '@mikro-orm/knex': 5.1.3_@mikro-orm+core@5.1.3
       '@mikro-orm/mariadb': 5.1.3_@mikro-orm+core@5.1.3
-      '@mikro-orm/mysql': 5.1.5_@mikro-orm+core@5.1.3
+      '@mikro-orm/mysql': 5.1.3_@mikro-orm+core@5.1.3
       fs-extra: 10.1.0
       tsconfig-paths: 3.14.1
       yargonaut: 1.1.4
@@ -457,7 +457,7 @@ packages:
       - tedious
     dev: true
 
-  /@mikro-orm/core/5.1.3_frfpq6wv32dnfqqfu23dt43aje:
+  /@mikro-orm/core/5.1.3_wlfhgmpaqqf4zyiwnvbzawf5dm:
     resolution: {integrity: sha512-N10ejP9EraJ5icnfjjR5v+8X5VE6fu31W5R3gi6Gd/FOsqUmUx2KEGTEA6j4f6PDstX1tKCyo9G+98LfNwmr4A==}
     engines: {node: '>= 14.0.0'}
     peerDependencies:
@@ -491,7 +491,7 @@ packages:
         optional: true
     dependencies:
       '@mikro-orm/mariadb': 5.1.3_@mikro-orm+core@5.1.3
-      '@mikro-orm/mysql': 5.1.5_@mikro-orm+core@5.1.3
+      '@mikro-orm/mysql': 5.1.3_@mikro-orm+core@5.1.3
       dotenv: 16.0.0
       escaya: 0.0.61
       fs-extra: 10.1.0
@@ -530,7 +530,7 @@ packages:
       sqlite3:
         optional: true
     dependencies:
-      '@mikro-orm/core': 5.1.3_frfpq6wv32dnfqqfu23dt43aje
+      '@mikro-orm/core': 5.1.3_wlfhgmpaqqf4zyiwnvbzawf5dm
       fs-extra: 10.1.0
       knex: 2.0.0
       sqlstring: 2.3.3
@@ -570,7 +570,7 @@ packages:
       sqlite3:
         optional: true
     dependencies:
-      '@mikro-orm/core': 5.1.3_frfpq6wv32dnfqqfu23dt43aje
+      '@mikro-orm/core': 5.1.3_wlfhgmpaqqf4zyiwnvbzawf5dm
       fs-extra: 10.1.0
       knex: 2.1.0_mysql2@2.3.3
       mysql2: 2.3.3
@@ -596,7 +596,7 @@ packages:
       '@mikro-orm/seeder':
         optional: true
     dependencies:
-      '@mikro-orm/core': 5.1.3_frfpq6wv32dnfqqfu23dt43aje
+      '@mikro-orm/core': 5.1.3_wlfhgmpaqqf4zyiwnvbzawf5dm
       '@mikro-orm/knex': 5.1.3_@mikro-orm+core@5.1.3
       mariadb: 2.5.6
     transitivePeerDependencies:
@@ -610,8 +610,8 @@ packages:
       - supports-color
       - tedious
 
-  /@mikro-orm/mysql/5.1.5_@mikro-orm+core@5.1.3:
-    resolution: {integrity: sha512-V6x5YOv1LweOovuHA1nDz2i2/5YyRKZjS5MBuW9V5R5z52tHPVIxmAVttuyjBuXQIV1OoHZe45Z8uOp7pqtH2g==}
+  /@mikro-orm/mysql/5.1.3_@mikro-orm+core@5.1.3:
+    resolution: {integrity: sha512-P6VIluQcNOdUxrcMNHG18FDYhSfsFfMzZ4rErA9FtjloPwtM1XVIJL3dBfjDzRLbpJXZftAphA7wY6vyRAC8Ag==}
     engines: {node: '>= 14.0.0'}
     peerDependencies:
       '@mikro-orm/core': ^5.0.0
@@ -626,7 +626,7 @@ packages:
       '@mikro-orm/seeder':
         optional: true
     dependencies:
-      '@mikro-orm/core': 5.1.3_frfpq6wv32dnfqqfu23dt43aje
+      '@mikro-orm/core': 5.1.3_wlfhgmpaqqf4zyiwnvbzawf5dm
       '@mikro-orm/knex': 5.1.5_xpgqq3yakbgiie3hovpdl23sha
       mysql2: 2.3.3
     transitivePeerDependencies:
