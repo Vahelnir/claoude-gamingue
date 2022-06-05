@@ -83,7 +83,7 @@ function start_loop(entity_manager: EntityManager) {
     delete_unused_vms();
 
     await save_vm_cache(entity_manager);
-  }, MAX_IDLE_TIME);
+  }, 60_000);
 }
 
 function delete_unused_vms() {
@@ -95,7 +95,7 @@ function delete_unused_vms() {
     .filter(([user_id]) => {
       const connected_user = connected_users.get(user_id);
       return (
-        !connected_user || now - connected_user.last_message_time >= 60_000
+        !connected_user || now - connected_user.last_message_time >= MAX_IDLE_TIME
       );
     })
     .map(([user_id, vm_cache]) =>
