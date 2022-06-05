@@ -1,3 +1,5 @@
 node_modules/
 .env
 build/
+base_skeleton.sql
+base_data.sql
